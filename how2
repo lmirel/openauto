@@ -1,0 +1,9 @@
+
+
+# USB permissions
+
+# Here the vendor ID is of Google
+$ echo 'SUBSYSTEM=="usb", ATTR{idVendor}=="18d1", MODE="0660", GROUP="plugdev"' | sudo tee —append /etc/udev/rules.d/51-android.rules
+$ sudo chmod a+r /etc/udev/rules.d/51-android.rules
+$ sudo udevadm control --reload-rules
+$ sudo service udev restart

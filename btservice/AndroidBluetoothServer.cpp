@@ -2,6 +2,7 @@
 #include "btservice/AndroidBluetoothServer.hpp"
 #include <QNetworkInterface>
 #include <QThread>
+#include <QtConcurrent/QtConcurrent>
 
 namespace openauto
 {
@@ -14,8 +15,9 @@ AndroidBluetoothServer::AndroidBluetoothServer(openauto::configuration::IConfigu
 {
     handshakeState = IDLE;
     connect(rfcommServer_.get(), &QBluetoothServer::newConnection, this, &AndroidBluetoothServer::onClientConnected);
-    QThread *thread = QThread::create([&]{ this->stateMachine(); });
-    thread->start();
+    QtConcurrent::run( [&]{ this->stateMachine(); });
+//    QThread *thread = QThread::create([&]{ this->stateMachine(); });
+//    thread->start();
 }
 
 void AndroidBluetoothServer::stateMachine()
